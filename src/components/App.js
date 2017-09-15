@@ -15,6 +15,7 @@ constructor(props) {
     pilot: ''
   }
   this.handleNameChange = this.handleNameChange.bind(this);
+  this.handleSubmit = this.handleSubmit.bind(this)
 }
   // FORM: HANDLE INPUT CHANGES
   // handleNameChange below:
@@ -22,7 +23,7 @@ constructor(props) {
   // Enter your code below:
   handleNameChange(event){
   this.setState({
-    name: event.target.value
+    value: event.target.value
   })
 }
   //  FORM: SUBMIT METHOD
@@ -31,19 +32,11 @@ constructor(props) {
   // Once the form is sumbited, two things need to happen: set the state of pilot to the input value.
   // Then, set the value of the input back to an empty string.
   // Enter your code below:
-  handleFormSubmit(event){
+  handleSubmit(event){
     event.preventDefault()
-    const newComment = {
-      comment: this.state.commentText,
-      name: this.state.name
-    }
-    const comments = this.state.comments;
-    comments.push(newComment)
-
     this.setState({
-      comments: comments,
-      commentText: "",
-      name: ""
+      pilot: this.state.value,
+      value: ""
     })
   }
 
@@ -54,6 +47,15 @@ constructor(props) {
   // In your response look for 'results'. It should return this array.
   // You will want to use this array when you set the state of 'vehicles'. You will need this data in your render.
   // Enter your code below:
+  componentDidMount() {
+    fetch('https://swapi.co/api/vehicles/')
+    .then(r => r.json() )
+    .then((json) => {
+      let vehicles = json.results;
+      console.log("Data from componentWillMount fetch", json)
+      this.setState({vehicles: vehicles})
+    })
+  }
 
 
   // RENDER
@@ -63,8 +65,27 @@ constructor(props) {
   // You will need the following values: name, model, manufacturer, class, passengers, crew, length, max speed, and cargo capacity.
   // Rendering: create a 'card' for each of the vehicles. consult the Bootstrap 4 docs for details.
   // Enter your code below:
-
   render() {
+    let ships = this.state.vehicles;
+    console.log("Ships: ", ships);
+    let vehicleData = ships.map((vehicle) => {
+      return (
+        <div className="vehicle_list" key={vehicle.name}>
+          <h2>Vehicle: {vehicle.name}</h2>
+          <h4>Model: {vehicle.model}</h4>
+          <div className="vehicle_details">
+            <h3>Specs</h3>
+            <p>Manufacturer: {vehicle.manufacturer}</p>
+            <p>Class: {vehicle.vehicle_class}</p>
+            <p>Passengers: {vehicle.passengers}</p>
+            <p>Crew: {vehicle.crew}</p>
+            <p>Length: {vehicle.length}</p>
+            <p>Max Speed: {vehicle.max_atmosphering_speed}</p>
+            <p>Cargo Capacity: {vehicle.cargo_capacity}</p>
+          </div>
+        </div>
+      );
+    })
     /*
     Store vehicles state in a variable.
     Map over this variable to access the values needed to render.
@@ -77,6 +98,7 @@ constructor(props) {
          jumbotron section, form section, vehicle cards section.
          Your form will also need a header in which you will pass the state of the form upon submit.
          */}
+
       </div>
     );
   }
