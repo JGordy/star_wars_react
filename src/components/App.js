@@ -52,7 +52,6 @@ constructor(props) {
     .then(r => r.json() )
     .then((json) => {
       let vehicles = json.results;
-      console.log("Data from componentWillMount fetch", json)
       this.setState({vehicles: vehicles})
     })
   }
@@ -67,21 +66,35 @@ constructor(props) {
   // Enter your code below:
   render() {
     let ships = this.state.vehicles;
-    console.log("Ships: ", ships);
-    let vehicleData = ships.map((vehicle) => {
+    let vehicle = ships.map((vehicle) => {
       return (
-        <div className="vehicle_list" key={vehicle.name}>
-          <h2>Vehicle: {vehicle.name}</h2>
-          <h4>Model: {vehicle.model}</h4>
-          <div className="vehicle_details">
-            <h3>Specs</h3>
-            <p>Manufacturer: {vehicle.manufacturer}</p>
-            <p>Class: {vehicle.vehicle_class}</p>
-            <p>Passengers: {vehicle.passengers}</p>
-            <p>Crew: {vehicle.crew}</p>
-            <p>Length: {vehicle.length}</p>
-            <p>Max Speed: {vehicle.max_atmosphering_speed}</p>
-            <p>Cargo Capacity: {vehicle.cargo_capacity}</p>
+        <div key={vehicle.name} className = "col-md-4">
+          <div className="card">
+            <div className="card-block">
+              <h4 className="card-title">Vehicle: {vehicle.name}</h4>
+              <h5 className="card-subtitle">Model: {vehicle.model}</h5>
+              <div className="card">
+                <div className="card-block">
+                  <h5 className="card-subtitle">Specs</h5>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">
+                    Manufacturer: {vehicle.manufacturer}</li>
+                    <li className="list-group-item">
+                    Class: {vehicle.vehicle_class}</li>
+                    <li className="list-group-item">
+                    Passengers: {vehicle.passengers}</li>
+                    <li className="list-group-item">
+                    Crew: {vehicle.crew}</li>
+                    <li className="list-group-item">
+                    Length: {vehicle.length}</li>
+                    <li className="list-group-item">
+                    Max Speed: {vehicle.max_atmosphering_speed}</li>
+                    <li className="list-group-item">
+                    Cargo Capacity: {vehicle.cargo_capacity}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       );
@@ -98,7 +111,29 @@ constructor(props) {
          jumbotron section, form section, vehicle cards section.
          Your form will also need a header in which you will pass the state of the form upon submit.
          */}
-
+        <main className="row">
+          <section className="col-md-10 offset-md-1">
+            <div className="jumbotron">
+              <h1 className="display-3">Star Wars</h1>
+              <p className = "lead"> The Vehicles of Star Wars </p>
+            </div>
+            <div className="card form">
+              <div className="card-block">
+                <h2 className="card-title">What is your name, pilot?</h2>
+                <form onSubmit={this.handleSubmit}>
+                  <div className="form-group">
+                    <input classname="form-control col-md-4 offset-md-4" id="pilotName" onChange={this.handleNameChange} name="name" type="text" value={this.state.value} placeholder="Enter your name"/>
+                  </div>
+                  <button type="submit" className="btn btn-primary">Submit</button>
+                </form>
+                <h2>{this.state.pilot}</h2>
+              </div>
+            </div>
+            <div className = "row">
+              {vehicle}
+            </div>
+          </section>
+        </main>
       </div>
     );
   }
